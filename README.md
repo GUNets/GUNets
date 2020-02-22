@@ -14,9 +14,9 @@
 
 ### Directory
 
-Datasets can be downloaded from the (Google Drive Link)[https://drive.google.com/open?id=1zycmmDES39zVlbVCYs88JTJ1Wm5FbfLz] provided in GraphSAINT (ICLR2020). After downloading the dataset, the directory structure should be as below: 
+Datasets can be downloaded from the [Google Drive Link](https://drive.google.com/open?id=1zycmmDES39zVlbVCYs88JTJ1Wm5FbfLz) provided in GraphSAINT (ICLR2020). After downloading the dataset, the directory structure should be as below: 
 
-Note that the floders such as ,`pre/`, `out_res/`, and `model_save\`, need to be created manually. 
+Note that the floders such as ,`pre/`, `out_res/`, and `model_save/`, need to be created manually. 
 
 
 
@@ -72,12 +72,12 @@ python train.py --warm_batch_num 100 --if_output --lr 0.001 --dataset reddit_new
 Yelp
 
 ```
-python train.py --warm_batch_num 100 --batch_size 20480 --lr 0.001 --dataset yelp --mlp_layer 2 --mlp_size 768 --emb_size 768 --drop_rate 0.1 --run_times 3 --patience 100 --output_batch 25 --weight same --max_degree 256 --if_trans_bn --mlp_act relu --if_trans_share --if_mlp_bn --if_bn_share --train_seed 42 --mlp_act relu --weight_decay 0 --n_jobs 40
+python train.py --warm_batch_num 100 --batch_size 20480 --lr 0.001 --dataset yelp --mlp_layer 2 --mlp_size 768 --emb_size 768 --drop_rate 0.1 --run_times 3 --patience 100 --output_batch 25 --weight same --max_degree 256 --if_trans_bn --mlp_act relu --if_trans_share --if_mlp_bn --if_bn_share --mlp_act relu --weight_decay 0 --n_jobs 40
 ```
 
 Amazon
 
 ```
-python train.py --warm_batch_num 100 --batch_size 20480 --lr 0.001 --dataset amazon --mlp_layer 6 --mlp_size 512 --emb_size 512 --drop_rate 0.1 --run_times 3 --patience 100 --output_batch 25 --weight same --max_degree 256 --if_trans_bn --if_trans_share --if_mlp_bn --if_bn_share --train_seed 42 --weight_decay 0 --n_jobs 40
+python train.py --warm_batch_num 100 --batch_size 20480 --lr 0.001 --dataset amazon --mlp_layer 6 --mlp_size 512 --emb_size 512 --drop_rate 0.1 --run_times 3 --patience 100 --output_batch 25 --weight same --max_degree 256 --if_trans_bn --if_trans_share --if_mlp_bn --if_bn_share --weight_decay 0 --n_jobs 40
 ```
 
