@@ -66,7 +66,7 @@ python train.py --warm_batch_num 0 --if_output --lr 0.01 --dataset flickr --mlp_
 Reddit
 
 ```
-python train.py --warm_batch_num 100 --if_output --lr 0.001 --dataset reddit_new --mlp_layer 2 --mlp_size 256 --emb_size 256 --drop_rate 0.4 --run_times 3 --patience 50 --output_batch 30 --batch_size 4096 --weight same --max_degree 100 --if_trans_bn --if_mlp_bn --if_trans_share --n_jobs 40
+python train.py --warm_batch_num 100 --if_output --lr 0.001 --dataset reddit --mlp_layer 2 --mlp_size 256 --emb_size 256 --drop_rate 0.4 --run_times 3 --patience 50 --output_batch 30 --batch_size 4096 --weight same --max_degree 100 --if_trans_bn --if_mlp_bn --if_trans_share --n_jobs 40
 ```
 
 Yelp
