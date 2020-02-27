@@ -2,7 +2,6 @@ import time
 import random
 import numpy as np
 import scipy.sparse as sp
-from sklearn import cluster
 from multiprocessing import Pool
 from sklearn.preprocessing import StandardScaler
 
@@ -27,29 +26,6 @@ def row_normalize(mx):
     r_mat_inv = sp.diags(r_inv)
     mx = r_mat_inv.dot(mx)
     return mx
-
-#
-# def compute_adjlist(adj, max_degree):
-#     """Transfer sparse adjacent matrix to adj-list format"""
-#     num_nodes = adj.shape[0]
-#     adj_map = num_nodes + np.zeros((num_nodes + 1, max_degree), dtype=np.int)
-#     for v in range(num_nodes):
-#         if v % 100000 == 0:
-#             print("%d nodes' adj list computed" % (v))
-#         neighbors = np.nonzero(adj[v, :])[1]
-#         if v in TR_SET:
-#             neighbors = np.array(list(set(neighbors).intersection(TR_SET)))
-#         len_neighbors = len(neighbors)
-#         if len_neighbors > max_degree:
-#             if SORTED:
-#                 weight_sort = np.argsort(-ADJ_SUM[neighbors])
-#                 neighbors = neighbors[weight_sort[:max_degree]]
-#             else:
-#                 neighbors = np.random.choice(neighbors, max_degree, replace=False)
-#             adj_map[v] = neighbors
-#         else:
-#             adj_map[v, :len_neighbors] = neighbors
-#     return adj_map
 
 
 def compute_adj_element(l):
@@ -290,134 +266,3 @@ def get_batch_emb(node_list, batch=100, if_bagging=None, if_print=True):
     SAMP_TIMES = SAMP_TIMES_BAK
     return np.vstack(emb_list)
 #
-#
-# def get_bgunsep_multi(idx_list):
-#     emb_list = []
-#     for idx in idx_list:
-#         traj = get_bgun_traj(idx)
-#         emb_traj = np.stack(
-#             list(map(lambda x:
-#                      np.mean(FEATURES[x].reshape([-1, DEGREE * NUM_FEATURES]), axis=0), traj[1])))
-#         emb_center = FEATURES[traj[0]]
-#         emb = np.vstack(
-#             [emb_center,
-#              emb_traj.reshape(SAMP_TIMES*2,-1)])
-#         emb_list.append(emb)
-#     return np.stack(emb_list)
-#
-# def get_cluster_multi_mean(idx_list):
-#     # mean
-#     emb_list = []
-#     kmeans = cluster.MiniBatchKMeans(n_clusters=SAMP_TIMES)
-#     for idx in idx_list:
-#         traj = get_gun_traj(idx)
-#         traj_idx = traj[1][0]
-#         if len(traj_idx)==0:
-#             traj[1][0] = NUM_NODES + np.zeros((1,2), dtype=np.int)
-#             traj_idx = traj[1][0]
-#         if len(traj_idx)<= SAMP_TIMES:
-#             for _ in range(SAMP_TIMES - 1):
-#                 traj[1].append(traj_idx)
-#         else:
-#             traj_emb = FEATURES[traj_idx].reshape([traj_idx.shape[0], -1])
-#             y = kmeans.fit(traj_emb).predict(traj_emb)
-#             traj_list = []
-#             for _ in range(SAMP_TIMES):
-#                 cluster_idx = y==_
-#                 if np.sum(cluster_idx)==0:
-#                     append_traj = NUM_NODES + np.zeros((1,2), dtype=np.int)
-#                 else:
-#                     append_traj = traj_idx[cluster_idx]
-#                 traj_list.append(append_traj)
-#             traj[1] = traj_list
-#         emb_traj = np.stack(
-#             list(map(lambda x:
-#                      np.mean(FEATURES[x].reshape([-1, DEGREE * NUM_FEATURES]), axis=0), traj[1])))
-#         emb_center = FEATURES[traj[0]]
-#         emb = np.vstack(
-#             [emb_center,
-#              emb_traj.reshape(SAMP_TIMES*2,-1)])
-#         emb_list.append(emb)
-#     return np.stack(emb_list)
-#
-#
-# def get_cluster_multi(idx_list):
-#     # SUM
-#     emb_list = []
-#     kmeans = cluster.MiniBatchKMeans(n_clusters=SAMP_TIMES)
-#     for idx in idx_list:
-#         traj = get_gun_traj(idx)
-#         traj_idx = traj[1][0]
-#         if len(traj_idx)==0:
-#             traj[1][0] = NUM_NODES + np.zeros((1,2), dtype=np.int)
-#             traj_idx = traj[1][0]
-#         if len(traj_idx)<= SAMP_TIMES:
-#             for _ in range(SAMP_TIMES - 1):
-#                 traj[1].append(traj_idx)
-#         else:
-#             traj_emb = FEATURES[traj_idx].reshape([traj_idx.shape[0], -1])
-#             y = kmeans.fit(traj_emb).predict(traj_emb)
-#             traj_list = []
-#             for _ in range(SAMP_TIMES):
-#                 cluster_idx = y==_
-#                 if np.sum(cluster_idx)==0:
-#                     append_traj = NUM_NODES + np.zeros((1,2), dtype=np.int)
-#                 else:
-#                     append_traj = traj_idx[cluster_idx]
-#                 traj_list.append(append_traj)
-#             traj[1] = traj_list
-#         emb_traj = np.stack(
-#             list(map(lambda x:
-#                      np.sum(FEATURES[x].reshape([-1, DEGREE * NUM_FEATURES]) / traj_idx.shape[0], axis=0), traj[1])))
-#         emb_center = FEATURES[traj[0]]
-#         emb = np.vstack(
-#             [emb_center,
-#              emb_traj.reshape([SAMP_TIMES*2,-1])])
-#         emb_list.append(emb)
-#     return np.stack(emb_list)
-#
-#
-# def get_batch_bgun(node_list, batch=100, if_bagging=None, if_print=True):
-#     t = time.time()
-#     batch_node_list = []
-#     for ind in range(0, len(node_list), batch):
-#         batch_node = node_list[ind: min(ind + batch, len(node_list))]
-#         batch_node_list.append(batch_node)
-#     with Pool(N_JOBS) as pool:
-#         emb_list = pool.map(get_bgunsep_multi, batch_node_list)
-#     if if_print:
-#         print('Get embedding in %.2f second' % (time.time() - t))
-#     return np.vstack(emb_list)
-#
-#
-# def get_batch_cluster(node_list, batch=100, if_bagging=None, if_print=True):
-#     t = time.time()
-#     batch_node_list = []
-#     for ind in range(0, len(node_list), batch):
-#         batch_node = node_list[ind: min(ind + batch, len(node_list))]
-#         batch_node_list.append(batch_node)
-#     with Pool(N_JOBS) as pool:
-#         emb_list = pool.map(get_cluster_multi, batch_node_list)
-#     if if_print:
-#         print('Get embedding in %.2f second' % (time.time() - t))
-#     return np.vstack(emb_list)
-#
-#
-# def god_filt(idx_list, labels):
-#     global ADJ_TRAIN
-#     if labels.shape[1] == 1:
-#         multi_flag=False
-#     else:
-#         multi_flag=True
-#     print('Multi Flag: %s'%(str(multi_flag)))
-#     for idx in idx_list:
-#         neigh = np.unique(ADJ_TRAIN[idx])
-#         neigh = neigh[neigh != NUM_NODES]
-#         if len(neigh) == 0:
-#             continue
-#         if multi_flag:
-#             neigh = neigh[np.sum(labels[neigh]*labels[idx], axis=-1)>0]
-#         else:
-#             neigh = neigh[(labels[neigh] == labels[idx]).reshape(-1)]
-#         ADJ_TRAIN[idx] = NUM_NODES * np.ones((1, MAX_DEGREE))
-#         ADJ_TRAIN[idx,:len(neigh)] = neigh
