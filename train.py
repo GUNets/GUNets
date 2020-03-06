@@ -152,10 +152,7 @@ root_path = os.getcwd() + '/'
 with launch_ipdb_on_exception():
     # Load Data
     t0 = time.time()
-    if args.dataset in ['reddit_raw', 'cora', 'citeseer', 'pubmed']:
-        adj, features, labels, tr_idx, va_idx, ts_idx = load_data(args.dataset)
-    else:
-        adj, features, labels, tr_idx, va_idx, ts_idx = load_big(prefix=args.dataset)
+    adj, features, labels, tr_idx, va_idx, ts_idx = load_big(prefix=args.dataset)
     num_feature = features.shape[1]
     num_nodes = adj.shape[0]
     if args.if_multi_label:
@@ -181,6 +178,9 @@ with launch_ipdb_on_exception():
         appendix += '-sort'
     appendix+='-degree'+str(args.max_degree)
     appendix += '-tr'
+    pre_path = root_path + 'pre/'
+    if not os.path.exists(pre_path):
+        os.makedirs(pre_path)
     if args.if_sampling:
         emb_save_file = 'pre/{}-la{}-st{}-sp{}-sn{}-seed{}.pkl'.format(
             args.dataset, args.un_layer, args.samp_times, args.samp_pare_num, args.samp_num,

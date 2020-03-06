@@ -5,10 +5,11 @@
 * Python >= 3.6.8
 * PyTorch >= 1.3.0
 * numpy
+* sklearn
 * scipy
+* Json
 * pickle
 * ipdb
-* klearn
 
 
 
