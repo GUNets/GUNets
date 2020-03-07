@@ -61,7 +61,7 @@ python train.py --warm_batch_num 100 --if_output --lr 0.001 --dataset ppi --mlp_
 Flickr
 
 ```
-python train.py --warm_batch_num 100 --if_output --lr 0.01 --dataset flickr --mlp_layer 2 --mlp_size 256 --emb_size 256 --drop_rate 0.5 --run_times 3 --patience 10 --output_batch 15 --batch_size 8192 --weight same --max_degree 100 --if_trans_bn --if_mlp_bn --if_trans_share --bn_mom 0.01 --trans_init kaiming --n_jobs 40
+python train.py --warm_batch_num 0 --if_output --lr 0.01 --dataset flickr --mlp_layer 2 --mlp_size 256 --emb_size 256 --drop_rate 0.5 --run_times 3 --patience 10 --output_batch 15 --batch_size 8192 --weight same --max_degree 100 --if_trans_bn --if_mlp_bn --if_trans_share --bn_mom 0.01 --trans_init kaiming --n_jobs 40
 ```
 
 Reddit
